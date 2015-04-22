@@ -1,0 +1,6 @@
+the_ROM_image:
+{
+	[bootloader]FSBL.elf
+	elink2_top_wrapper.bit
+	u-boot.elf
+}
