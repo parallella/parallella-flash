@@ -43,6 +43,7 @@ $ git clone https://github.com/olajep/parallella-flash
 ===============
 
 $ git clone https://github.com/parallella/parallella-uboot --branch parallella-next
+$ cd parallella-uboot
 $ make adapteva_parallella_defconfig
 $ make
 $ cp u-boot path/to/parallella-flash/u-boot.elf
