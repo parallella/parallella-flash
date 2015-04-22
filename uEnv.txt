@@ -1,0 +1,101 @@
+# Customization
+#hdmi=yes
+#devicetree_image=devicetree.dtb
+#bitstream_image=parallella.bit.bin
+kernel_image=uImage
+
+# Generally no need to touch anything below
+kernel_load_address=0x2080000
+devicetree_load_address=0x2000000
+loadbit_addr=0x100000
+loadbootenv_addr=0x2000000
+kernel_size=0x00a80000
+devicetree_size=0x20000
+boot_size=0xF00000
+fdt_high=0x20000000
+initrd_high=0x20000000
+slowblink=led 0 toggle && sleep 1 && led 0 toggle && sleep 1 || true
+tftpboot_stage2=\
+    echo Will boot from sd card in 2 seconds; \
+    sleep 2; \
+    run sdboot
+
+mmc_loadbit=echo Loading bitstream from SD/MMC/eMMC to RAM..; \
+    load mmc 0 ${loadbit_addr} ${bitstream_image} && \
+    fpga load 0 ${loadbit_addr} ${filesize}
+
+select_bitstream= \
+    test -n ${bitstream_image} && exit; \
+    env set bitstream_image parallella_${hdmi_str}_${fpga_model}.bit.bin
+
+select_devicetree= \
+    test -n ${devicetree_image} && exit; \
+    if test ${board_model} = p1600; then \
+        env set devicetree_image parallella_p1600.dtb; \
+    elif test ${hdmi} = yes; then \
+        env set devicetree_image parallella_hdmi.dtb; \
+    else \
+        env set devicetree_image parallella_headless.dtb; \
+    fi
+
+select_boot_files= \
+    run select_bitstream; \
+    run select_devicetree
+
+probe_adv7513=i2c probe 0x39
+
+detect_hdmi_= \
+    test -n ${hdmi} && exit; \
+    if run probe_adv7513; then \
+        env set hdmi yes; \
+    else \
+        env set hdmi no; \
+    fi
+
+detect_hdmi= \
+    run detect_hdmi_; \
+    if test ${hdmi} = yes; then \
+        env set hdmi_str "hdmi"; \
+    else \
+        env set hdmi_str "headless"; \
+    fi
+
+detect_board_model=\
+    if test ${fpga_model} = "7z020"; then  \
+        env set board_model p1602;  \
+    elif test ${fpga_model} = "7z010"; then  \
+        if run probe_adv7513; then \
+            env set board_model p1601;\
+        else \
+            env set board_model p1600;  \
+        fi; \
+    fi;
+
+detect_hardware=\
+    run detect_board_model; \
+    run detect_hdmi;
+
+print_configuration= \
+    echo ;\
+    echo Configuration \
+    echo ============= \
+    echo "board_model: ${board_model}";\
+    echo "hdmi:        ${hdmi}";\
+    echo "devicetree:  ${devicetree_image}";\
+    echo "bitstream:   ${bitstream_image}"; \
+    echo "uImage:      ${kernel_image}"; \
+    echo
+
+sdboot= \
+    led 0 on; \
+    run detect_hardware; \
+    run select_boot_files; \
+    run print_configuration; \
+    run mmc_loadbit || run slowblink;  \
+    echo Copying Linux from SD to RAM... &&  \
+    load mmc 0 ${kernel_load_address} ${kernel_image} &&  \
+    load mmc 0 ${devicetree_load_address} ${devicetree_image} && \
+    run slowblink && \
+    bootm ${kernel_load_address} - ${devicetree_load_address} || \
+    led 0 off;
+
