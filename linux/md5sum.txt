@@ -1,0 +1,2 @@
+08f0fb4f4fbfe5086d8aba6cacece68a  BOOT.7z020.bin
+2e2cd0f10a6c8f7d836d0d752507f9b2  env.bin
