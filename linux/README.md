@@ -4,6 +4,13 @@ linux-flash
 This script can be used to flash a live Parallella system from the command
 line in linux.
 
+```
+sudo mkdir -p /mnt/boot
+sudo mount /dev/mmcblk0p1 /mnt/boot
+sudo /mnt/boot/flash/linux-flash.sh
+```
+ 
+
 File           | Description
 ---------------|---------------------------------------------------------------
 linux-flash.sh | Flash script
