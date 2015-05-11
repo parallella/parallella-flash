@@ -10,7 +10,8 @@ Use OpenOCD instead?
 FILES
 =====
 
-flash.sh                    Flash script. JTAG.
+mkbootflash.sh              Script that creates boot flash image.
+jtag-flash.sh               Flash script. JTAG.
 boot.bif                    Boot image description
 version.bin                 Boot image version. Written into last 64 kb of
                             flash by flash.sh
