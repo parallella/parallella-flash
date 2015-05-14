@@ -1,12 +1,3 @@
-TODO
-====
-
-For JTAG flash we need to figure out a way to read back the environment from
-flash so that we can extract "ethaddr" and AdaptevaSKU.
-
-Can't find any easy way to read back flash image with Xilinx tools.
-Use OpenOCD instead?
-
 FILES
 =====
 
@@ -44,7 +35,6 @@ PROCEDURE
 5. Increment version number in version.bin with your favorite hex editor
 6. Run mkbootflash.sh
 7. Run mkenvimage
-8. Run jtag-flash.sh
 
 HOW THE NEW BOOT PROCESS WORKS
 ==============================
@@ -111,9 +101,8 @@ Run mkbootflash.sh to create boot flash image
 ============================================================
 mkenvimage -s 131072 -o env.bin env.txt
 
-8. Run jtag-flash.sh
-====================
-
-You need a JTAG cable and installed drivers for this.
-You might need to run the flash script twice.
+8. Further
+==========
+You now have all files and are ready to flash your board.
+See {jtag/serial/linux}/README.txt for instructions.
 
