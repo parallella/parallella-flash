@@ -1,3 +1,8 @@
+# Instructions for creating Parallella board flash images
+
+WARNING: This is work in progress. Don't try this at home unless you have a
+Xilinx JTAG cable / Porcupine board at hand.
+
 ##FILES
 
 ```
@@ -19,7 +24,11 @@ uEnv.txt                  | Example 2nd stage boot script.
 
 ##VERSION FORMAT
 
-Little endian
+TODO: Not sure if we need this. We can put it in the default uboot environment
+instead.
+
+
+Little endian:
 
 ```c
 struct {
