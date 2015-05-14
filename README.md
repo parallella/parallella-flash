@@ -3,6 +3,15 @@
 WARNING: This is work in progress. Don't try this at home unless you have a
 Xilinx JTAG cable / Porcupine board at hand.
 
+##TODO
+* Use SPL in uboot
+* Create empty Parallella project with working I2C.
+* Export ps7\_init\* from that project to Parallella U-boot.
+* Generate bitstreams for z7010 and z7020.
+* Embed both bitstreams in boot image (there is room)
+* Load bitstream early in u-boot before calling power\_init()
+* == one flash image for all boards.
+
 ##FILES
 
 ```
@@ -64,7 +73,10 @@ correct bitstream / devicetree / uImage and boots linux.
 
 
 ###1. Download flash git repository
+
+```
 $ git clone https://github.com/olajep/parallella-flash
+```
 
 
 ###2. Build U-BOOT
