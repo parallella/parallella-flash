@@ -75,7 +75,7 @@ correct bitstream / devicetree / uImage and boots linux.
 ###1. Download flash git repository
 
 ```
-$ git clone https://github.com/olajep/parallella-flash
+$ git clone https://github.com/parallella/parallella-flash
 ```
 
 
