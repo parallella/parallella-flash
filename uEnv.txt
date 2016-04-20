@@ -20,9 +20,18 @@ tftpboot_stage2=\
     sleep 2; \
     run sdboot
 
-mmc_loadbit=echo Loading bitstream from SD/MMC/eMMC to RAM..; \
-    load mmc 0 ${loadbit_addr} ${bitstream_image} && \
-    fpga load 0 ${loadbit_addr} ${filesize}
+mmc_loadbit=echo Loading bitstream from SD/MMC/eMMC to RAM...; \
+    if load mmc 0 ${loadbit_addr} ${bitstream_image}; then \
+        ; \
+    else \
+        echo ERROR: FAILED LOADING BITSTREAM; exit; \
+    fi; \
+    if fpga load 0 ${loadbit_addr} ${filesize} || \
+       fpga loadb 0 ${loadbit_addr} ${filesize}; then \
+        echo OK: Bitstream loaded to FPGA; \
+    else \
+        echo ERROR: FAILED LOADING BITSTREAM TO FPGA; \
+    fi
 
 select_bitstream= \
     test -n ${bitstream_image} && exit; \
