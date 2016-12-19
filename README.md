@@ -85,7 +85,7 @@ $ git clone https://github.com/parallella/parallella-flash
 $ git clone https://github.com/parallella/parallella-uboot --branch parallella-next
 $ cd parallella-uboot
 $ make adapteva_parallella_defconfig
-$ make
+$ make CROSS_COMPILE=arm-linux-gnueabihf-
 $ cp u-boot path/to/parallella-flash/u-boot.elf
 ```
 
